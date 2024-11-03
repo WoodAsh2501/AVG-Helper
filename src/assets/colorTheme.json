@@ -1,0 +1,17 @@
+{
+    "player": {
+        "color-main": "#3198FF",
+        "color-lighter": "#DCEAFB",
+        "color-darker": "#003669"
+    },
+    "object": {
+        "color-main": "#18DD00",
+        "color-lighter": "#D8F9D4",
+        "color-darker": "#0A5D00"
+    },
+    "map": {
+        "color-main": "#DD0088",
+        "color-lighter": "#FBDCEF",
+        "color-darker": "#5D003A"
+    }
+}
