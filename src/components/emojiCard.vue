@@ -1,12 +1,12 @@
 <script>
 import EmojiInput from './emojiInput.vue';
-import EmojiLable from './emojiLable.vue';
+import EmojiLabel from './emojiLabel.vue';
 
 
 export default {
     components: {
         EmojiInput,
-        EmojiLable
+        EmojiLabel
     },
     props: {
         colorTheme: Object,
@@ -18,12 +18,15 @@ export default {
             colorMain: this.colorTheme["color-main"],
             colorLighter: this.colorTheme["color-lighter"],
             colorDarker: this.colorTheme["color-darker"],
+            emoji: '',
+            objectName: '',
             defaultEmoji: '😊',
-            emoji: ''
+            defaultObjectName: 'NPC',
         }
     },
     created() {
         this.emoji = this.defaultEmoji;
+        this.objectName = this.defaultObjectName;
     },
     methods: {
         handleBlur() {
@@ -36,8 +39,16 @@ export default {
                 alert('请输入有效的emoji图标~');
             }
         }
+    },
+    watch: {
+        emoji(newEmoji) {
+            this.$emit('update:emoji', newEmoji);
+        },
+        objectName(newObjectName) {
+            // console.log(newObjectName);
+            this.$emit('update:objectName', newObjectName);
+        }
     }
-
 }
 </script>
 
@@ -57,10 +68,10 @@ export default {
                        :style="{ color: colorMain }">
             </div>
         </div>
-        <EmojiLable v-if="this.isPlayer" class="mx-auto" :colorTheme :attr />
+        <EmojiLabel v-if="this.isPlayer" class="mx-auto" :colorTheme :attr />
         <div v-else class="flex gap-[8px] mx-auto">
-            <EmojiLable :colorTheme :attr />
-            <EmojiInput :colorTheme />
+            <EmojiLabel :colorTheme :attr />
+            <EmojiInput :colorTheme :value="objectName" @update:value="(newValue) => this.objectName = newValue"/>
         </div>
 
 

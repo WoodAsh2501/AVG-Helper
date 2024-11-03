@@ -4,7 +4,7 @@
         "color-lighter": "#DCEAFB",
         "color-darker": "#003669"
     },
-    "object": {
+    "npc": {
         "color-main": "#18DD00",
         "color-lighter": "#D8F9D4",
         "color-darker": "#0A5D00"

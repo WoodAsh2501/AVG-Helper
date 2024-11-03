@@ -17,7 +17,6 @@ export default {
         }
     },
     mounted() {
-        console.log(this.innerValue)
     },
 }
 </script>
@@ -26,14 +25,13 @@ export default {
     <div contenteditable @input="(e) => {
         if (this.oneChar) {
             e.target.innerText = e.target.innerText[0];
-            console.log(this.innerValue)
             this.innerValue = e.target.innerText[0]
         } else {
             this.innerValue = e.target.innerText
         this.$emit('update:value', this.innerValue)
         }
         
-    }" class="p-[8px] text-wrap border-[1px] mx-auto rounded-[8px] outline-transparent leading-none text-center break-words overflow-hidden"
+    }" class="text-[14px] p-[8px] text-wrap border-[1px] mx-auto rounded-[8px] outline-transparent leading-none text-center break-words overflow-hidden"
          :class="[oneChar ? 'w-[2em]' : 'w-full']" :style="{
             color: colorDarker,
             borderColor: colorMain,

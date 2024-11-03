@@ -1,6 +1,6 @@
 <script>
 import AttrInput from './attrInput.vue';
-import AttrLable from './attrLable.vue';
+import AttrLabel from './attrLabel.vue';
 
 export default {
     props: {
@@ -8,7 +8,7 @@ export default {
         attrs: Object,
     },
     components: {
-        AttrLable,
+        AttrLabel,
         AttrInput
     },
     data() {
@@ -28,7 +28,7 @@ export default {
     <div class="flex flex-col p-[8px] w-[96px] gap-[8px] border-2 self-end bg-white rounded-[16px] justify-between"
          :class="[this.multiple ? 'h-full' : 'h-fit']" :style="{ borderColor: colorMain }">
         <div class="flex flex-col gap-[8px]" v-for="attr in attrList">
-            <AttrLable :colorTheme :attr="this.innerAttrs[attr].name" />
+            <AttrLabel :colorTheme :attr="this.innerAttrs[attr].name" />
             <AttrInput :colorTheme :value="this.innerAttrs[attr].value" @update:value="(newValue) => {
                 this.innerAttrs[attr].value = newValue;
                 this.$emit('update:attrs', this.innerAttrs)
