@@ -16,7 +16,7 @@ export default {
 </script>
 
 <template>
-    <div class="p-[8px] text-[14px] font-semibold size-fit text-nowrap rounded-[8px] leading-none text-center"
+    <div class="py-[8px] w-[54px] text-[14px] font-semibold size-fit text-nowrap rounded-[8px] leading-none text-center shrink-0"
          :style="{ color: colorDarker, backgroundColor: colorLighter }">
         {{ labelName }}
     </div>

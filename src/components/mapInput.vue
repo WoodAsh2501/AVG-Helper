@@ -1,15 +1,15 @@
 <script>
-import { objectAttrs } from '@/store';
+import { mapAttrs } from '@/store';
 
 export default {
     props: {
         colorTheme: Object,
-        objectType: String,
         attrName: String,
+        index: Number
     },
     data() {
         return {
-            objectAttrs,
+            mapAttrs,
 
             colorMain: this.colorTheme["color-main"],
             colorLighter: this.colorTheme["color-lighter"],
@@ -17,15 +17,17 @@ export default {
         }
     },
     mounted() {
-        this.$refs.emojiInputDiv.innerText = objectAttrs[this.objectType][this.attrName].value
+        if (this.index >= 0) {
+            this.$refs.emojiInputDiv.innerText = mapAttrs[this.index][this.attrName].value
+        }
     }
 }
 </script>
 
 <template>
     <div contenteditable ref="emojiInputDiv" @input="(e) => {
-        objectAttrs[objectType][attrName].value = e.target.innerText
-    }" class="p-[8px] h-[30px] text-wrap border-[1px] self-baseline rounded-[8px] outline-transparent leading-none text-center break-words overflow-hidden min-w-[4em]"
+        mapAttrs[index][attrName].value = e.target.innerText
+    }" class="p-[8px] h-[30px] border-[1px] rounded-[8px] outline-none leading-none text-center text-nowrap overscroll-x-auto overflow-hidden w-full"
          :style="{
             color: colorDarker,
             borderColor: colorMain,

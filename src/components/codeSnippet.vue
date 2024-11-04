@@ -25,6 +25,8 @@ export default {
     <div class="flex flex-col w-[344px] rounded-[16px] border-2" :style="{
         borderColor: colorMain,
     }">
+
+        <!-- 顶栏 -->
         <div class="flex p-[8px] justify-between rounded-t-[16px] border-b-2 box-border" :style="{
             backgroundColor: colorLighter,
             color: colorDarker,
@@ -33,6 +35,8 @@ export default {
             <div class="text-[14px] leading-none my-auto size-fit">
                 点击右侧复制代码
             </div>
+
+            <!-- 复制按钮 -->
             <button @click="copyCode" class="size-[14px] my-auto">
                 <svg xmlns="http://www.w3.org/2000/svg" :fill="colorDarker" viewBox="0 0 32 32">
                     <path class="cls-1"
@@ -43,8 +47,9 @@ export default {
             </button>
         </div>
 
+        <!-- 代码窗口 -->
         <div class="flex p-[8px] rounded-b-[16px] h-[200px] w-full font-mono">
-            <code ref="codeBlock" class="codeBlock overflow-y-auto overflow-x-clip w-full" 
+            <code ref="codeBlock" class="codeBlock overflow-y-auto overflow-x-auto w-full" 
             :style="{ color: colorDarker, }">
                 <slot></slot> 
             </code>

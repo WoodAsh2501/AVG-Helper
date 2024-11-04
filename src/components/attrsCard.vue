@@ -2,10 +2,12 @@
 import AttrInput from './attrInput.vue';
 import AttrLabel from './attrLabel.vue';
 
+import { objectAttrs } from '@/store';
+
 export default {
     props: {
         colorTheme: Object,
-        attrs: Object,
+        objectType: String
     },
     components: {
         AttrLabel,
@@ -13,13 +15,18 @@ export default {
     },
     data() {
         return {
+            objectAttrs,
+
             colorMain: this.colorTheme["color-main"],
             colorLighter: this.colorTheme["color-lighter"],
             colorDarker: this.colorTheme["color-darker"],
-            innerAttrs: this.attrs,
-            attrList: Object.keys(this.attrs),
-            multiple: Object.keys(this.attrs).length > 1
+            attrs: this.objectType == "player"
+                ? Object.keys(objectAttrs[this.objectType]).slice(1, 2)
+                : Object.keys(objectAttrs[this.objectType]).slice(2, 5)
         }
+    },
+    mounted() {
+
     },
 }
 </script>
@@ -27,12 +34,9 @@ export default {
 <template>
     <div class="flex flex-col p-[8px] w-[96px] gap-[8px] border-2 self-end bg-white rounded-[16px] justify-between"
          :class="[this.multiple ? 'h-full' : 'h-fit']" :style="{ borderColor: colorMain }">
-        <div class="flex flex-col gap-[8px]" v-for="attr in attrList">
-            <AttrLabel :colorTheme :attr="this.innerAttrs[attr].name" />
-            <AttrInput :colorTheme :value="this.innerAttrs[attr].value" @update:value="(newValue) => {
-                this.innerAttrs[attr].value = newValue;
-                this.$emit('update:attrs', this.innerAttrs)
-            }"/>
+        <div class="flex flex-col gap-[8px]" v-for="attr in attrs">
+            <AttrLabel :colorTheme :attr="objectAttrs[this.objectType][attr].name" />
+            <AttrInput :colorTheme :objectType :attrName="attr" />
         </div>
     </div>
 

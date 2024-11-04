@@ -1,36 +1,26 @@
 <script>
+import { objectAttrs } from '@/store';
+
 import ColorTheme from '../assets/colorTheme.json';
 import EmojiCard from './emojiCard.vue';
 import AttrsCard from './attrsCard.vue';
-import CodePanel from './codePanel.vue';
+import codeSnippet from './codeSnippet.vue';
+import PromptCard from './promptCard.vue';
 
 export default {
     components: {
         EmojiCard,
         AttrsCard,
-        CodePanel
+        codeSnippet,
+        PromptCard
+    },
+    props: {
+        npcNumber: String
     },
     data() {
         return {
+            objectAttrs,
             colorTheme: ColorTheme["npc"],
-            attrs: {
-                'sign': {
-                    'name': '符号',
-                    'value': '?',
-                },
-                'label': {
-                    'name': '标签',
-                    'value': '一个NPC',
-                },
-                'size': {
-                    'name': '大小',
-                    'value': '100',
-                },
-            },
-            emojiAttrs: {
-                'emoji': '',
-                'objectName': '',
-            }
         }
     },
 }
@@ -40,17 +30,30 @@ export default {
 <template>
     <div class="flex flex-col gap-[8px]">
         <div class="flex gap-[8px] h-[240px]">
-            <EmojiCard :colorTheme attr="对象名" 
-                @update:emoji="(newEmoji) => this.emojiAttrs.emoji = newEmoji"
-                @update:objectName="(newObjectName) => this.emojiAttrs.objectName = newObjectName" />
-            <AttrsCard :colorTheme :attrs @update:attrs="(newAttrs) => this.attrs = newAttrs" />
+            <EmojiCard :colorTheme :objectType="npcNumber" />
+            <AttrsCard :colorTheme :objectType="npcNumber" />
         </div>
-        <CodePanel :colorTheme>
+        <PromptCard :colorTheme :objectType="npcNumber" attrName="firstMessage" />
+        <PromptCard :colorTheme :objectType="npcNumber" attrName="prompt" />
+        <codeSnippet :colorTheme>
             <pre>
-{{ emojiAttrs.objectName }} = new Sprite({{ emojiAttrs.emoji }});
+            {{ objectAttrs[npcNumber].object.value }} = createInteractiveObject({
+            d:{{ objectAttrs[npcNumber].size.value }},
+            image:'{{ objectAttrs[npcNumber].emoji.value }}',
+            tile:'{{ objectAttrs[npcNumber].sign.value }}',
+            label:'{{ objectAttrs[npcNumber].label.value }}',
+            systemPrompt:`{{ objectAttrs[npcNumber].prompt.value }}`,
+            firstMessage: "{{ objectAttrs[npcNumber].firstMessage.value }}",
+            onSend:function(){
+            this.update = function(){this.rotation += 5}
+            },
+            onRespond:function(){
+            this.update = function(){};this.rotation = 0;
+            }
+            });
             </pre>
 
-        </CodePanel>
+        </codeSnippet>
     </div>
 
 </template>
