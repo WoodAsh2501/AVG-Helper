@@ -32,16 +32,18 @@ export default {
     },
     methods: {
         handleBlur() {
-            const emojiRegex = /[\u{1F600}-\u{1F64F}]/u;
-            if (!this.emoji || this.emoji === ' ') {
-                this.emoji = this.previousEmoji;
-                alert('图标不能为空哦~');
-            } else if (!emojiRegex.test(this.emoji)) {
-                this.emoji = this.previousEmoji;
-                alert('请输入有效的emoji图标~');
-            } else {
-                this.previousEmoji = this.emoji
-            }
+            // const emojiRegex = /[\u{1F600}-\u{1F64F}]/u;
+            // if (!this.emoji || this.emoji === ' ') {
+            //     this.emoji = this.previousEmoji;
+            //     alert('图标不能为空哦~');
+            // } else if (!emojiRegex.test(this.emoji)) {
+            //     this.emoji = this.previousEmoji;
+            //     alert('请输入有效的emoji图标~');
+            // } else {
+            //     this.previousEmoji = this.emoji
+            // }
+
+            this.emoji = this.emoji.trim();
         }
     },
     watch: {
@@ -60,7 +62,7 @@ export default {
 </script>
 
 <template>
-    <div class="flex flex-col p-[16px] w-[240px] h-[240px] border-2 bg-white rounded-[16px] justify-between"
+    <div class="flex flex-col p-[1rem] w-[240px] h-[240px] border-2 bg-white rounded-[1rem] justify-between"
          :style="{ borderColor: colorMain }">
         <div class="relative flex flex-col w-full items-center -mt-1.5 justify-center">
             <!-- 背景花纹 -->

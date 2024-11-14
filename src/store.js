@@ -1,4 +1,5 @@
 import { reactive } from 'vue'
+import { ref } from 'vue'
 
 export const objectAttrs = reactive({
     'player': {
@@ -22,11 +23,11 @@ export const objectAttrs = reactive({
         },
         'sign': {
             'name': '符号',
-            'value': '?',
+            'value': 'C',
         },
         'label': {
             'name': '标签',
-            'value': '一个NPC',
+            'value': '猫猫',
         },
         'size': {
             'name': '大小',
@@ -38,16 +39,7 @@ export const objectAttrs = reactive({
         },
         'prompt': {
             'name': '提示词',
-            'value': `身份信息：
-名称：喵小智
-类型：虚拟助手
-角色：小猫形象的人工智能助手
-功能：提供信息查询、日常对话、娱乐互动等
-说话习惯：
-
-语言风格：亲切、活泼、带有一些猫科动物特有的幽默感
-常用词汇：喵、爪子、小鱼干、喵呜等
-语气：温和、友好，有时会表现出好奇和顽皮`,
+            'value': ``,
         }
 
     },
@@ -62,11 +54,11 @@ export const objectAttrs = reactive({
         },
         'sign': {
             'name': '符号',
-            'value': '?',
+            'value': 'D',
         },
         'label': {
             'name': '标签',
-            'value': '一个NPC',
+            'value': '狗狗',
         },
         'size': {
             'name': '大小',
@@ -74,7 +66,7 @@ export const objectAttrs = reactive({
         },
         'firstMessage': {
             'name': '第一条信息',
-            'value': '你好，我是NPC',
+            'value': '你好，我是一只狗~',
         },
         'prompt': {
             'name': '提示词',
@@ -124,15 +116,15 @@ export const mapAttrs = reactive([
     {
         'emoji': {
             'name': '表情',
-            'value': '🌲',
+            'value': '🌊',
         },
         'object': {
             'name': '对象名',
-            'value': 'tree'
+            'value': 'water'
         },
         'sign': {
             'name': '符号',
-            'value': '=',
+            'value': '-',
         },
         'size': {
             'name': '大小',
@@ -160,3 +152,10 @@ export const newMapAttr = {
     },
 }
 
+export const gameMap = reactive([
+    "=====",
+    "*...*",
+    "*C.D*",
+    "*...*",
+    "-----",
+])

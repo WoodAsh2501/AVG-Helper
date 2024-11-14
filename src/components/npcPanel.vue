@@ -37,20 +37,24 @@ export default {
         <PromptCard :colorTheme :objectType="npcNumber" attrName="prompt" />
         <codeSnippet :colorTheme>
             <pre>
-            {{ objectAttrs[npcNumber].object.value }} = createInteractiveObject({
-            d:{{ objectAttrs[npcNumber].size.value }},
-            image:'{{ objectAttrs[npcNumber].emoji.value }}',
-            tile:'{{ objectAttrs[npcNumber].sign.value }}',
-            label:'{{ objectAttrs[npcNumber].label.value }}',
-            systemPrompt:`{{ objectAttrs[npcNumber].prompt.value }}`,
-            firstMessage: "{{ objectAttrs[npcNumber].firstMessage.value }}",
-            onSend:function(){
-            this.update = function(){this.rotation += 5}
-            },
-            onRespond:function(){
-            this.update = function(){};this.rotation = 0;
-            }
-            });
+{{ objectAttrs[npcNumber].object.value }} = createInteractiveObject({
+    d:{{ objectAttrs[npcNumber].size.value }},
+    image:'{{ objectAttrs[npcNumber].emoji.value }}',
+    tile:'{{ objectAttrs[npcNumber].sign.value }}',
+    label:'{{ objectAttrs[npcNumber].label.value }}',
+    systemPrompt:`{{ objectAttrs[npcNumber].prompt.value }}`,
+    firstMessage: `{{ objectAttrs[npcNumber].firstMessage.value }}`,
+    onSend:function(){
+        this.update = function(){
+            this.rotation += 5
+        }
+    },
+    onRespond:function(){
+        this.update = function(){
+            this.rotation = 0
+        }
+    }
+});
             </pre>
 
         </codeSnippet>

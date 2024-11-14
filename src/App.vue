@@ -13,9 +13,9 @@ export default {
 </script>
 
 <template>
-    <div class="flex gap-[32px]">
+    <div class="flex gap-[2rem]">
         <PlayerPanel />
-        <div class="flex gap-[16px]">
+        <div class="flex gap-[1rem]">
             <NpcPanel npcNumber="npc1" />
             <NpcPanel npcNumber="npc2" />
         </div>

@@ -20,7 +20,7 @@ export default {
 </script>
 
 <template>
-    <div class="text-[14px] font-semibold p-[8px] h-fit mx-auto rounded-[8px] leading-none text-center"
+    <div class="text-[0.8rem] font-semibold p-[8px] h-fit mx-auto rounded-[8px] leading-none text-center"
         :class="[this.fullWidth ? 'w-full' : 'w-fit']"
          :style="{ color: colorDarker, backgroundColor: colorLighter }">
         {{ attr }}

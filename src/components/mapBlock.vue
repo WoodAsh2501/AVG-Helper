@@ -34,14 +34,16 @@ export default {
     },
     methods: {
         handleBlur() {
-            const emojiRegex = /[\u{1F600}-\u{1F64F}]/u;
-            if (!this.emoji || this.emoji === ' ') {
-                this.emoji = this.defaultEmoji;
-                alert('图标不能为空哦~');
-            } else if (!emojiRegex.test(this.emoji)) {
-                this.emoji = this.defaultEmoji;
-                alert('请输入有效的emoji图标~');
-            }
+            // const emojiRegex = /[\u{1F600}-\u{1F64F}]/u;
+            // if (!this.emoji || this.emoji === ' ') {
+            //     this.emoji = this.defaultEmoji;
+            //     alert('图标不能为空哦~');
+            // } else if (!emojiRegex.test(this.emoji)) {
+            //     this.emoji = this.defaultEmoji;
+            //     alert('请输入有效的emoji图标~');
+            // }
+
+            this.emoji = this.emoji.trim();
         },
         removeCard() {
             console.log(this.index);
@@ -57,7 +59,7 @@ export default {
 </script>
 
 <template>
-    <div class="flex flex-col p-[8px] w-[140px] h-[240px] border-2 bg-white rounded-[16px] justify-between"
+    <div class="flex flex-col p-[8px] w-[140px] h-[240px] border-2 bg-white rounded-[1rem] justify-between"
          :style="{ borderColor: colorMain }">
         <div class="relative flex flex-col w-full items-center -mt-1.5 justify-center">
             <!-- 背景花纹 -->
@@ -89,7 +91,7 @@ export default {
 
             <!-- 表情输入框 -->
             <div v-else class="text-[80px] w-full h-[128px] leading-none pb-3 m-auto z-10">
-                <input type="text" maxlength="1" v-model="emoji" @blur="handleBlur"
+                <input  type="text" maxlength="1" v-model="emoji" @blur="handleBlur"
                        class="size-full text-center bg-transparent border-none outline-none"
                        :style="{ color: colorMain }">
             </div>
@@ -97,7 +99,7 @@ export default {
         <div class="flex flex-col gap-[4px]">
             <div class="flex gap-[4px]" v-for="attr in attrs">
                 <MapLabel :colorTheme="colorTheme" :labelName="mapAttrs[0][attr].name" />
-                <MapInput :colorTheme :index :attrName="attr" />
+                <MapInput :editAble="!emptyCard" :colorTheme :index :attrName="attr" />
             </div>
 
         </div>

@@ -28,7 +28,7 @@ export default {
 
 <template>
     <div contenteditable ref="attrInputDiv"
-         class="text-[14px] p-[8px] text-wrap border-[1px] mx-auto rounded-[8px] leading-none text-center break-words overflow-hidden outline-none"
+         class="text-[0.8rem] p-[8px] text-wrap border-[1px] mx-auto rounded-[8px] leading-none text-center break-words overflow-hidden outline-none"
          :class="[oneChar ? 'w-[2em]' : 'w-full']" 
          :style="{
             color: colorDarker,

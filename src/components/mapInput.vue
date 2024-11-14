@@ -5,7 +5,8 @@ export default {
     props: {
         colorTheme: Object,
         attrName: String,
-        index: Number
+        index: Number,
+        editAble: Boolean
     },
     data() {
         return {
@@ -25,8 +26,9 @@ export default {
 </script>
 
 <template>
-    <div contenteditable ref="emojiInputDiv" @input="(e) => {
-        mapAttrs[index][attrName].value = e.target.innerText
+    <div :contenteditable="editAble" ref="emojiInputDiv" 
+    @input="(e) => {
+        mapAttrs[index][attrName].value = e.target.innerText;
     }" class="p-[8px] h-[30px] border-[1px] rounded-[8px] outline-none leading-none text-center text-nowrap overscroll-x-auto overflow-hidden w-full"
          :style="{
             color: colorDarker,

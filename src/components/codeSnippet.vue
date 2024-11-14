@@ -22,17 +22,17 @@ export default {
 </script>
 
 <template>
-    <div class="flex flex-col w-[344px] rounded-[16px] border-2" :style="{
+    <div class="flex flex-col w-[344px] rounded-[1rem] border-2" :style="{
         borderColor: colorMain,
     }">
 
         <!-- 顶栏 -->
-        <div class="flex p-[8px] justify-between rounded-t-[16px] border-b-2 box-border" :style="{
+        <div class="flex p-[8px] justify-between rounded-t-[1rem] border-b-2 box-border" :style="{
             backgroundColor: colorLighter,
             color: colorDarker,
             borderColor: colorMain,
         }">
-            <div class="text-[14px] leading-none my-auto size-fit">
+            <div class="text-[0.8rem] leading-none my-auto size-fit">
                 点击右侧复制代码
             </div>
 
@@ -48,10 +48,10 @@ export default {
         </div>
 
         <!-- 代码窗口 -->
-        <div class="flex p-[8px] rounded-b-[16px] h-[200px] w-full font-mono">
+        <div class="flex p-[8px] rounded-b-[1rem] h-[200px] w-full font-mono">
             <code ref="codeBlock" class="codeBlock overflow-y-auto overflow-x-auto w-full" 
             :style="{ color: colorDarker, }">
-                <slot></slot> 
+            <slot></slot> 
             </code>
         </div>
     </div>
