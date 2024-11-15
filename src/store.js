@@ -9,7 +9,11 @@ export const objectAttrs = reactive({
         },
         'coordinate': {
             'name': '坐标',
-            'value': '0,0,0',
+            'value': '0,0',
+        },
+        'size': {
+            'name': '大小',
+            'value': '100',
         },
     },
     'npc1': {
@@ -153,9 +157,9 @@ export const newMapAttr = {
 }
 
 export const gameMap = reactive([
+    "..===",
+    "....-",
+    "=C.D-",
+    "=***-",
     "=====",
-    "*...*",
-    "*C.D*",
-    "*...*",
-    "-----",
 ])

@@ -29,7 +29,7 @@ export default {
         </div>
         <codeSnippet :colorTheme>
             <pre>
-player = new Sprite({{ objectAttrs.player.coordinate.value }});
+player = new Sprite({{ objectAttrs.player.coordinate.value }},{{ objectAttrs.player.size.value }});
 player.image = "{{ objectAttrs.player.emoji.value }}";
 player.accer = 0.8;
 player.maxSpeed = 5;

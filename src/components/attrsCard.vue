@@ -21,7 +21,7 @@ export default {
             colorLighter: this.colorTheme["color-lighter"],
             colorDarker: this.colorTheme["color-darker"],
             attrs: this.objectType == "player"
-                ? Object.keys(objectAttrs[this.objectType]).slice(1, 2)
+                ? Object.keys(objectAttrs[this.objectType]).slice(1, 3)
                 : Object.keys(objectAttrs[this.objectType]).slice(2, 5)
         }
     },
@@ -32,8 +32,8 @@ export default {
 </script>
 
 <template>
-    <div class="flex flex-col p-[8px] w-[96px] gap-[8px] border-2 self-end bg-white rounded-[1rem] justify-between"
-         :class="[this.multiple ? 'h-full' : 'h-fit']" :style="{ borderColor: colorMain }">
+    <div class="flex flex-col p-[8px] w-[96px] gap-[8px] border-2 self-end bg-white rounded-[1rem] justify-between "
+        :style="{ borderColor: colorMain }">
         <div class="flex flex-col gap-[8px]" v-for="attr in attrs">
             <AttrLabel :colorTheme :attr="objectAttrs[this.objectType][attr].name" />
             <AttrInput :colorTheme :objectType :attrName="attr" />
