@@ -13,7 +13,7 @@ export default {
 </script>
 
 <template>
-    <div class="flex m-auto w-fit gap-[2rem]">
+    <div class="flex mx-auto mt-10 w-fit gap-[2rem]">
         <PlayerPanel />
         <div class="flex gap-[1rem]">
             <NpcPanel npcNumber="npc1" />

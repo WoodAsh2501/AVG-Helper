@@ -50,6 +50,7 @@ export default {
             let gameMapNew = e.target.innerText.split('\n')
             // 保障数组的引用不变  hack了一下
             gameMap.splice(0, Infinity, ...gameMapNew)
+            // gameMap = gameMapNew
             
         }" class="border-2 w-1/2 rounded-[1rem] p-[8px] font-mono" :style="{
                 borderColor: colorMain,
@@ -61,6 +62,7 @@ export default {
                 borderColor: colorMain,
                 color: colorMain
             }">
+            {{ mapAttrs }}
             <div v-for="mapLine in gameMap" class="block">
                 <div v-for="block in ignoreSpace(mapLine)" class=" inline-block w-[1.4em]">
                     {{ mapDict[block] }}
