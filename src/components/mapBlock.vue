@@ -91,7 +91,7 @@ export default {
 
             <!-- 表情输入框 -->
             <div v-else class="text-[80px] w-full h-[128px] leading-none pb-3 m-auto z-10">
-                <input  type="text" maxlength="1" v-model="emoji" @blur="handleBlur"
+                <input  type="text" v-model="emoji" @blur="handleBlur"
                        class="size-full text-center bg-transparent border-none outline-none"
                        :style="{ color: colorMain }">
             </div>

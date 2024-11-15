@@ -62,7 +62,7 @@ export default {
                 borderColor: colorMain,
                 color: colorMain
             }">
-            {{ mapAttrs }}
+            
             <div v-for="mapLine in gameMap" class="block">
                 <div v-for="block in ignoreSpace(mapLine)" class=" inline-block w-[1.4em]">
                     {{ mapDict[block] }}
