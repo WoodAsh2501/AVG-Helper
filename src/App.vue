@@ -23,11 +23,11 @@ export default {
 
 <template>
     <div class="flex mx-auto mt-10 w-fit gap-[2rem]">
-        <PlayerPanel :objectAttrs="playerAttrs" />
-        <div v-for="i in npcAttrs.length"
-        class="flex gap-[1rem]">
-            <NpcPanel :objectAttrs="npcAttrs[i]" />
-        </div>
         <MapPanel />
+        <PlayerPanel :objectAttrs="playerAttrs" />
+        <div v-for="npcAttr in npcAttrs"
+        class="flex gap-[1rem]">
+            <NpcPanel :objectAttrs="npcAttr" />
+        </div>
     </div>
 </template>

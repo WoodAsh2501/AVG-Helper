@@ -1,4 +1,4 @@
-<script>
+<script >
 export default {
     props: {
         colorTheme: Object,
@@ -14,7 +14,8 @@ export default {
         }
     },
     mounted() {
-        this.$refs.promptDiv.innerText = promptAttrs.value;
+        console.log(this.promptAttrs)
+        this.$refs.promptDiv.innerText = this.promptAttrs.value;
     },
 }
 </script>

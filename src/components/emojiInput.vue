@@ -13,7 +13,7 @@ export default {
         }
     },
     mounted() {
-        this.$refs.emojiInputDiv.innerText = inputAttrs.value
+        this.$refs.emojiInputDiv.innerText = this.inputAttrs.value
     }
 }
 </script>

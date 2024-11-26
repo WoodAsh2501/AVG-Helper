@@ -26,7 +26,7 @@ export default {
 </script>
 
 <template>
-    <div class="flex flex-col gap-[8px]">
+    <div v-if="objectAttrs" class="flex flex-col gap-[8px]">
         <div class="flex gap-[8px] h-[240px]">
             <EmojiCard :colorTheme :objectAttrs />
             <AttrsCard :colorTheme :objectAttrs />

@@ -16,7 +16,7 @@ export default {
         }
     },
     mounted() {
-        this.$refs.attrInputDiv.innerText = attr.value
+        this.$refs.attrInputDiv.innerText = this.attr.value
     },
 }
 </script>

@@ -17,13 +17,13 @@ export default {
             colorLighter: this.colorTheme["color-lighter"],
             colorDarker: this.colorTheme["color-darker"],
 
-            attrs: !objectAttrs.hasOwnProperty('object')
-                ? Object.keys(objectAttrs).slice(1, 3)
-                : Object.keys(objectAttrs).slice(2, 5)
+            attrs: []
         }
     },
     mounted() {
-
+        this.attrs = !this.objectAttrs.hasOwnProperty('object')
+                ? Object.keys(this.objectAttrs).slice(1, 3)
+                : Object.keys(this.objectAttrs).slice(2, 5)
     },
 }
 </script>

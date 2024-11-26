@@ -10,7 +10,7 @@ export default {
     },
     data() {
         return {
-            attrName: attr.name,
+            attrName: this.attr.name,
             colorMain: this.colorTheme["color-main"],
             colorLighter: this.colorTheme["color-lighter"],
             colorDarker: this.colorTheme["color-darker"],
