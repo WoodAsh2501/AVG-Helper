@@ -1,30 +1,26 @@
 <script>
-import { objectAttrs } from '@/store';
-
 export default {
     props: {
         colorTheme: Object,
         objectType: String,
-        attrName: String,
+        inputAttrs: Object,
     },
     data() {
         return {
-            objectAttrs,
-
             colorMain: this.colorTheme["color-main"],
             colorLighter: this.colorTheme["color-lighter"],
             colorDarker: this.colorTheme["color-darker"],
         }
     },
     mounted() {
-        this.$refs.emojiInputDiv.innerText = objectAttrs[this.objectType][this.attrName].value
+        this.$refs.emojiInputDiv.innerText = inputAttrs.value
     }
 }
 </script>
 
 <template>
     <div contenteditable ref="emojiInputDiv" @input="(e) => {
-        objectAttrs[objectType][attrName].value = e.target.innerText
+        inputAttrs.value = e.target.innerText
     }" class="p-[8px] h-[30px] text-wrap border-[1px] self-baseline rounded-[8px] outline-transparent leading-none text-center break-words overflow-hidden min-w-[4em]"
          :style="{
             color: colorDarker,

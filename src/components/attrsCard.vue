@@ -2,27 +2,24 @@
 import AttrInput from './attrInput.vue';
 import AttrLabel from './attrLabel.vue';
 
-import { objectAttrs } from '@/store';
-
 export default {
     props: {
         colorTheme: Object,
-        objectType: String
+        objectAttrs: Object,
     },
     components: {
         AttrLabel,
-        AttrInput
+        AttrInput,
     },
     data() {
         return {
-            objectAttrs,
-
             colorMain: this.colorTheme["color-main"],
             colorLighter: this.colorTheme["color-lighter"],
             colorDarker: this.colorTheme["color-darker"],
-            attrs: this.objectType == "player"
-                ? Object.keys(objectAttrs[this.objectType]).slice(1, 3)
-                : Object.keys(objectAttrs[this.objectType]).slice(2, 5)
+
+            attrs: !objectAttrs.hasOwnProperty('object')
+                ? Object.keys(objectAttrs).slice(1, 3)
+                : Object.keys(objectAttrs).slice(2, 5)
         }
     },
     mounted() {
@@ -35,8 +32,8 @@ export default {
     <div class="flex flex-col p-[8px] w-[96px] gap-[8px] border-2 self-end bg-white rounded-[1rem] justify-between "
         :style="{ borderColor: colorMain }">
         <div class="flex flex-col gap-[8px]" v-for="attr in attrs">
-            <AttrLabel :colorTheme :attr="objectAttrs[this.objectType][attr].name" />
-            <AttrInput :colorTheme :objectType :attrName="attr" />
+            <AttrLabel :colorTheme :attr="objectAttrs[attr]" />
+            <AttrInput :colorTheme :attr="objectAttrs[attr]" />
         </div>
     </div>
 
