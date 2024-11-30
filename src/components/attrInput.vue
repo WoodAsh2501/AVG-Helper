@@ -1,6 +1,4 @@
 <script>
-import { objectAttrs } from '@/store';
-
 export default {
     props: {
         colorTheme: Object,
@@ -8,20 +6,17 @@ export default {
             type: Boolean,
             default: false
         },
-        attrName: String,
-        objectType: String
+        attr: Object
     },
     data() {
         return {
-            objectAttrs,
-
             colorMain: this.colorTheme["color-main"],
             colorLighter: this.colorTheme["color-lighter"],
             colorDarker: this.colorTheme["color-darker"],
         }
     },
     mounted() {
-        this.$refs.attrInputDiv.innerText = objectAttrs[this.objectType][this.attrName].value
+        this.$refs.attrInputDiv.innerText = this.attr.value
     },
 }
 </script>
@@ -36,9 +31,9 @@ export default {
         }" @input="(e) => {
             if (this.oneChar) {
                 e.target.innerText = e.target.innerText[0];
-                objectAttrs[objectType][attrName].value = e.target.innerText[0]
+                attr.value = e.target.innerText[0]
             } else {
-                objectAttrs[objectType][attrName].value = e.target.innerText
+                attr.value = e.target.innerText
             }
         }">
     </div>

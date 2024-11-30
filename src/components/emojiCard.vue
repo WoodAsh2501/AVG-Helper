@@ -1,6 +1,4 @@
 <script>
-import { objectAttrs } from '@/store';
-
 import EmojiInput from './emojiInput.vue';
 import EmojiLabel from './emojiLabel.vue';
 
@@ -11,23 +9,25 @@ export default {
     },
     props: {
         colorTheme: Object,
-        objectType: String,
+        objectAttrs: Object,
     },
     data() {
-        return {
-            objectAttrs,
-
+        return {            
             colorMain: this.colorTheme["color-main"],
             colorLighter: this.colorTheme["color-lighter"],
             colorDarker: this.colorTheme["color-darker"],
-            emoji: objectAttrs[this.objectType].emoji.value,
-            previousEmoji: objectAttrs[this.objectType].emoji.value,
-            isPlayer: this.objectType == 'player'
+
+            emoji: '',
+            previousEmoji: '',
+            isPlayer: false
         }
     },
     created() {
+        this.emoji = this.objectAttrs.emoji.value;
+        this.previousEmoji = this.objectAttrs.emoji.value;
+        this.isPlayer = !this.objectAttrs.hasOwnProperty('object');
         if (!this.isPlayer) {
-            this.objectName = objectAttrs[this.objectType].object.value;
+            this.objectName = this.objectAttrs.object.value;
         }
     },
     methods: {
@@ -49,12 +49,12 @@ export default {
     watch: {
         emoji: {
             handler(newVal) {
-                objectAttrs[this.objectType].emoji.value = newVal;
+                this.objectAttrs.emoji.value = newVal;
             }
         },
         objectName: {
             handler(newVal) {
-                objectAttrs[this.objectType].object.value = newVal;
+                this.objectAttrs.object.value = newVal;
             }
         }
     }
@@ -82,10 +82,10 @@ export default {
         </div>
 
         <!-- 下方标签/输入框 -->
-        <EmojiLabel v-if="objectType === 'player'" class="mx-auto" :colorTheme :labelName="objectAttrs[objectType].emoji.name" />
+        <EmojiLabel v-if="isPlayer" class="mx-auto" :colorTheme :labelName="objectAttrs.emoji.name" />
         <div v-else class="flex gap-[8px] mx-auto">
-            <EmojiLabel :colorTheme :labelName="objectAttrs[objectType].object.name" />
-            <EmojiInput :colorTheme attrName="object" :objectType />
+            <EmojiLabel :colorTheme :labelName="objectAttrs.object.name" />
+            <EmojiInput :colorTheme :inputAttrs="objectAttrs.object" />
         </div>
     </div>
 

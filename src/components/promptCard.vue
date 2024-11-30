@@ -1,24 +1,21 @@
-<script>
-import { objectAttrs } from '@/store';
-
+<script >
 export default {
     props: {
         colorTheme: Object,
         value: String,
         attrName: String,
-        objectType: String,
+        promptAttrs: Object,
     },
     data() {
         return {
-            objectAttrs,
-
             colorMain: this.colorTheme["color-main"],
             colorLighter: this.colorTheme["color-lighter"],
             colorDarker: this.colorTheme["color-darker"],
         }
     },
     mounted() {
-        this.$refs.promptDiv.innerText = this.objectAttrs[this.objectType][this.attrName].value;
+        console.log(this.promptAttrs)
+        this.$refs.promptDiv.innerText = this.promptAttrs.value;
     },
 }
 </script>
@@ -32,12 +29,12 @@ export default {
             backgroundColor: colorLighter,
             color: colorDarker
         }">
-            {{ attrName }}
+            {{ promptAttrs.name }}
         </div>
 
         <!-- 右侧输入框 -->
         <div ref="promptDiv" contenteditable="plaintext-only" @input="(e) => {
-            objectAttrs[objectType][attrName].value = e.target.innerText
+            promptAttrs.value = e.target.innerText
         }" class="text-[0.8rem] p-[8px] w-full text-wrap border-[1px] mx-auto rounded-[8px] outline-none leading-none break-words overflow-hidden" style="-webkit-user-modify: read-write-plaintext-only"
              :style="{
                 color: colorDarker,

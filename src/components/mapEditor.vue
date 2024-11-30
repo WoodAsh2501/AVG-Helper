@@ -1,9 +1,7 @@
 <script>
 import { mapAttrs } from '@/store';
 import { gameMap } from '@/store';
-import { objectAttrs } from '@/store';
-
-import ColorTheme from '../assets/colorTheme.json';
+import { npcAttrs } from '@/store';
 
 export default {
     props: {
@@ -13,7 +11,7 @@ export default {
         return {
             mapAttrs,
             gameMap,
-            objectAttrs,
+            npcAttrs,
 
             colorMain: this.colorTheme["color-main"],
             colorLighter: this.colorTheme["color-lighter"],
@@ -28,8 +26,7 @@ export default {
             return Object.fromEntries(
                 mapAttrs.map(block => [block.sign.value, block.emoji.value])
                 .concat([['.', ' ']])
-                .concat([[objectAttrs.npc1.sign.value, objectAttrs.npc1.emoji.value]])
-                .concat([[objectAttrs.npc2.sign.value, objectAttrs.npc2.emoji.value]])
+                .concat(npcAttrs.map(npcAttr => [npcAttr.sign.value, npcAttr.emoji.value]))
             )
         }
     },
