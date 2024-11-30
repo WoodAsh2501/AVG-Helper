@@ -44,6 +44,7 @@ export default {
             // }
 
             this.emoji = this.emoji.trim();
+            mapAttrs[this.index].emoji.value = this.emoji;
         },
         removeCard() {
             console.log(this.index);

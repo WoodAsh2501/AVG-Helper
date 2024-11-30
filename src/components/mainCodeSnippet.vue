@@ -33,19 +33,19 @@ export default {
             borderColor: colorMain,
         }">
             <div class="text-[0.8rem] leading-none my-auto size-fit">
-                <!-- 点击右侧复制代码 -->
-                全选复制到AVG Maker吧~
+                点击右侧复制代码
+                <!-- 全选复制到AVG Maker吧~ -->
             </div>
 
             <!-- 复制按钮 -->
-            <!-- <button @click="copyCode" class="size-[14px] my-auto">
+            <button @click="copyCode" class="size-[14px] my-auto">
                 <svg xmlns="http://www.w3.org/2000/svg" :fill="colorDarker" viewBox="0 0 32 32">
                     <path class="cls-1"
                           d="M22.37,5.75H2.23c-1.23,0-2.23.99-2.23,2.23v21.79c0,1.23.99,2.23,2.23,2.23h20.15c1.23,0,2.23-.99,2.23-2.23V7.98c0-1.23-1-2.23-2.23-2.23ZM21.63,29.03H2.97V8.72h18.67v20.31h0Z" />
                     <path class="cls-1"
                           d="M26.41,0H6.73c-.82,0-1.48.67-1.48,1.48s.67,1.48,1.48,1.48h19.69c.54,0,.98.44.98.98v22.14c0,.82.67,1.48,1.48,1.48s1.48-.67,1.48-1.48V3.95c0-2.18-1.77-3.95-3.95-3.95Z" />
                 </svg>
-            </button> -->
+            </button>
         </div>
 
         <!-- 代码窗口 -->

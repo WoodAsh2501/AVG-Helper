@@ -11,6 +11,7 @@ import CodeBefore from './components/code/codeBefore.vue';
 import CodeAfter from './components/code/codeAfter.vue';
 import MainCodeSnippet from './components/mainCodeSnippet.vue';
 import NewNpcCard from './components/newNpcCard.vue';
+import CodeMain from './components/code/codeMain.vue';
 
 export default {
     data() {
@@ -28,15 +29,20 @@ export default {
         NewNpcCard,
         MainCodeSnippet,
         CodeBefore,
-        CodeAfter
+        CodeMain,
+        CodeAfter,
     }
 }
 </script>
 
 <template>
-    <div class="flex mx-auto mt-10 w-fit gap-[2rem]">
+    <div class="px-10 text-lg text-[#4E4E4E]">
+        请横向拖动滚动条查看所有模块~
+    </div>
+    <div class="flex mx-auto mt-4 w-fit gap-[2rem] px-10">
         <MainCodeSnippet class='h-[500px]' :colorTheme="this.codeSnippetColor">
             <CodeBefore />
+            <CodeMain />
             <CodeAfter />
         </MainCodeSnippet>
         <MapPanel />
