@@ -1,0 +1,87 @@
+<template>
+    <span>
+        <pre>
+// 接收到GPT消息时会调用的函数
+let player;
+let objects;
+let interactiveObjects;
+let mainInteractiveObjects;
+let bufferPlayer;
+let labelSprites;
+let currentInteractiveObject = null;
+let itemButton;
+let sendButton;
+let chatInput;
+let chatLog;
+let inventory;
+let iButtons;
+let showChatLog = false;
+let labelSize = 30;
+let mainSceneAgents=[];
+let currentScene = 0;
+let itemUseDictionary = [];
+let itemUseNow = [];
+let inventoryItems=[];
+let currentItem_namepluscode = null;
+let thingsLikeRecord = {};
+let lastInterativeOject = null;
+let lastItem_namepluscode = null;
+let bubbleQueue = [];
+
+
+function sendUserMessage() {
+  if (currentInteractiveObject.onSend!==undefined) currentInteractiveObject.onSend();
+  let message = chatInput.value();
+  if (message.trim() !== "") {
+    chatInput.value("");
+    // 系统回复
+    if (currentInteractiveObject.agent) {
+      currentInteractiveObject.agent.send(message);
+      updateChatLog();
+      currentInteractiveObject.agent.onComplete = (t) => {
+        if (currentInteractiveObject.onRespond!==undefined)  currentInteractiveObject.onRespond(t);
+        updateChatLog();
+      };
+    
+    }
+  }
+}
+
+function setup() {
+  new Canvas(700, 800);
+  frameRate(60);
+  p5play.renderStats = false;
+  
+  var chatInterface = document.getElementById('chatInterface');
+  chatInterface.style.left = width + 'px';
+  chatInterface.style.height = height + 'px';
+
+  inventory = select("#inventory");
+  sendButton = select("#sendButton");
+  itemButton = select('#itemButton');
+  chatInput = select("#chatInput");
+  chatLog = select("#chatLog");
+  iButtons = document.getElementById('iButtons');
+
+  sendButton.mousePressed(sendUserMessage);
+
+  objects = new Group();
+  objects.collider = "s";
+  objects.bounciness = 0;
+  objects.layer = 1;
+
+  interactiveObjects = new Group();
+  interactiveObjects.collider = "s";
+  interactiveObjects.layer = 1;
+  interactiveObjects.textSize = 20;
+  interactiveObjects.bounciness = 0;
+  interactiveObjects.labelSprite = null;
+
+  labelSprites = new Group();
+  labelSprites.textSize = labelSize*0.7;
+  labelSprites.color = "#ECFEF9AA";
+  labelSprites.strokeWeight = 0;
+  labelSprites.autoDraw = false;
+</pre>
+    </span>
+</template>

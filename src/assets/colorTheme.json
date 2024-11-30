@@ -13,5 +13,10 @@
         "color-main": "#DD0088",
         "color-lighter": "#FBDCEF",
         "color-darker": "#5D003A"
+    },
+    "code": {
+        "color-main": "#DD0088",
+        "color-lighter": "#FBDCEF",
+        "color-darker": "#5D003A"
     }
 }
