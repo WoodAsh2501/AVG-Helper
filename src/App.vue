@@ -1,58 +1,22 @@
 <script>
-import { playerAttrs } from './store';
-import { npcAttrs } from './store';
-import ColorTheme from './assets/colorTheme.json';
-
-import MapPanel from './components/mapPanel.vue';
-import NpcPanel from './components/npcPanel.vue';
-import PlayerPanel from './components/playerPanel.vue';
-
-import CodeBefore from './components/code/codeBefore.vue';
-import CodeAfter from './components/code/codeAfter.vue';
-import MainCodeSnippet from './components/mainCodeSnippet.vue';
-import NewNpcCard from './components/newNpcCard.vue';
-import CodeMain from './components/code/codeMain.vue';
-
 export default {
-    data() {
-        return {
-            playerAttrs,
-            npcAttrs,
-            codeSnippetColor: ColorTheme["code"]
-
-        }
-    },
-    components: {
-        PlayerPanel,
-        NpcPanel,
-        MapPanel,
-        NewNpcCard,
-        MainCodeSnippet,
-        CodeBefore,
-        CodeMain,
-        CodeAfter,
-    }
+   
 }
 </script>
-
 <template>
-    <div class="px-10 text-lg text-[#4E4E4E]">
-        请横向拖动滚动条查看所有模块~
+<div class="size-full">
+    <div id="gridCanvas" class="absolute size-[2500px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+        <div v-for="i in 2500"
+        class="border"></div>
     </div>
-    <div class="flex mx-auto mt-4 w-fit gap-[2rem] px-10">
-        <MainCodeSnippet class='h-[500px]' :colorTheme="this.codeSnippetColor">
-            <CodeBefore />
-            <CodeMain />
-            <CodeAfter />
-        </MainCodeSnippet>
-        <MapPanel />
-        <PlayerPanel :objectAttrs="playerAttrs" />
-        <div class="flex gap-[1rem]">
-            <div v-for="npcAttr in npcAttrs" class="flex gap-[1rem]">
-                <NpcPanel :objectAttrs="npcAttr" />
-            </div>
-            <NewNpcCard />
-        </div>
+</div>
 
-    </div>
 </template>
+
+<style>
+#gridCanvas {
+    display: grid;
+    grid-template-columns: repeat(50, 1fr);
+    grid-template-rows: repeat(50, 1fr);
+}
+</style>
