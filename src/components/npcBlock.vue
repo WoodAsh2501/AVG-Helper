@@ -1,19 +1,22 @@
 <script>
-import { gameObjects, state } from '@/store';
-import { newMapAttr } from '@/store';
+import { state, gameObjects, newNpcAttr } from '@/store';
 
 export default {
     props: {
-        index: Number,
-        emptyCard: Boolean
+        index: {
+            type: Number,
+            default: 0
+        },
+        isPlayer: Boolean,
+        emptyCard: Boolean,
     },
     data() {
         return {
             gameObjects,
-            newMapAttr,
+            newNpcAttr,
             state,
 
-            type: 'map',
+            type: this.isPlayer ? 'player' : 'npc',
             colorMain: "#454545",
             colorLighter: "#333333",
             colorSelected: '#3198FF',
@@ -21,14 +24,16 @@ export default {
     },
     methods: {
         selected() {
-            state.selected.type = 'map';
+            state.selected.type = this.type;
             state.selected.index = this.index;
             console.log(state.selected.type, state.selected.index)
         }
     },
     computed: {
         isSelected() {
-            return state.selected.type === 'map' && state.selected.index === this.index;
+            if (this.emptyCard) return false;
+            return state.selected.type === this.type && state.selected.index === this.index;
+
         },
         emoji() {
             return gameObjects[this.type][this.index].emoji.value;
@@ -39,13 +44,12 @@ export default {
 </script>
 
 <template>
-    <button class="flex size-[48px] border-2 bg-white rounded-full justify-between items-center" @click="selected"
-        :style="{
-            borderColor: isSelected ? colorSelected : colorMain
-        }">
+    <div @click="selected" class="flex size-[72px] border-2 bg-white rounded-[16px] justify-between text-black" :style="{
+        borderColor: isSelected ? colorSelected : colorMain
+    }">
         <div class="relative flex flex-col w-full  items-center justify-center">
             <!-- 背景花纹 -->
-            <div v-if="isSelected" class="absolute size-[32px] inset-0 m-auto z-0 opacity-50">
+            <div v-if="isSelected" class="absolute size-[56px] inset-0 m-auto z-0">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 188 188"
                     :fill="isSelected ? colorSelected : colorMain">
                     <path class="cls-1"
@@ -54,7 +58,7 @@ export default {
             </div>
 
             <!-- 新增卡片按钮 -->
-            <div v-if="emptyCard" @click="mapAttrs.push(newMapAttr)"
+            <div v-if="emptyCard" @click="npcAttrs.push(newNpcAttr)"
                 class="text-[80px] flex items-center w-full h-[128px] leading-none m-auto z-10">
                 <svg class="m-auto" width="36" height="36" viewBox="0 0 50 50" fill="none" :stroke="colorMain"
                     xmlns="http://www.w3.org/2000/svg">
@@ -64,11 +68,11 @@ export default {
                 </svg>
             </div>
 
-            <div v-else class="text-[24px] size-fit text-black z-10 select-none">
+            <div v-else class="text-[36px] size-fit z-10 select-none">
                 {{ emoji }}
             </div>
 
         </div>
-    </button>
+    </div>
 
 </template>
