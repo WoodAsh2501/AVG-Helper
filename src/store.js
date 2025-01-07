@@ -1,5 +1,4 @@
 import { reactive } from "vue";
-import { ref } from "vue";
 
 export const state = reactive({
   mode: "DRAG",
@@ -15,7 +14,7 @@ export const gameObjects = reactive({
       emoji: {
         name: "表情",
         value: "😀",
-        visible: true
+        visible: true,
       },
       coordinate: {
         name: "坐标",
@@ -38,7 +37,7 @@ export const gameObjects = reactive({
       },
       object: {
         name: "对象名",
-        value: "cat",
+        value: "gameObject_upp",
         visible: false,
       },
       sign: {
@@ -49,7 +48,7 @@ export const gameObjects = reactive({
       label: {
         name: "标签",
         value: "猫猫",
-        visible: false,
+        visible: true,
       },
       size: {
         name: "大小",
@@ -75,7 +74,7 @@ export const gameObjects = reactive({
       },
       object: {
         name: "对象名",
-        value: "dog",
+        value: "gameObject_kvz",
         visible: false,
       },
       sign: {
@@ -86,7 +85,7 @@ export const gameObjects = reactive({
       label: {
         name: "标签",
         value: "狗狗",
-        visible: false,
+        visible: true,
       },
       size: {
         name: "大小",
@@ -114,7 +113,7 @@ export const gameObjects = reactive({
       },
       object: {
         name: "对象名",
-        value: "tree",
+        value: "gameObject_ios",
         visible: false,
       },
       sign: {
@@ -136,7 +135,7 @@ export const gameObjects = reactive({
       },
       object: {
         name: "对象名",
-        value: "flower",
+        value: "gameObject_kvo",
         visible: false,
       },
       sign: {
@@ -158,7 +157,7 @@ export const gameObjects = reactive({
       },
       object: {
         name: "对象名",
-        value: "water",
+        value: "gameObject_lmq",
         visible: false,
       },
       sign: {
@@ -175,55 +174,64 @@ export const gameObjects = reactive({
   ],
 });
 
-
-export const newNpcAttr = reactive({
+export const newNpcAttr = {
   emoji: {
     name: "表情",
     value: "🐶",
+    visible: true,
   },
   object: {
     name: "对象名",
-    value: "dog",
+    value: "",
+    visible: false,
   },
   sign: {
     name: "符号",
-    value: "D",
+    value: "",
+    visible: false,
   },
   label: {
     name: "标签",
     value: "狗狗",
+    visible: true,
   },
   size: {
     name: "大小",
     value: "100",
+    visible: true,
   },
   firstMessage: {
     name: "第一条信息",
     value: "你好，我是一只狗~",
+    visible: true,
   },
   prompt: {
     name: "提示词",
     value: "",
+    visible: true,
   },
-});
-
+};
 
 export const newMapAttr = {
   emoji: {
     name: "表情",
     value: "🌸",
+    visible: true,
   },
   object: {
     name: "对象名",
-    value: "flower",
+    value: "",
+    visible: false,
   },
   sign: {
     name: "符号",
-    value: "*",
+    value: "",
+    visible: false,
   },
   size: {
     name: "大小",
     value: "100",
+    visible: true,
   },
 };
 

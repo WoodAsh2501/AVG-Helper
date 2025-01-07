@@ -1,6 +1,6 @@
 <script>
 import { state, gameObjects, newNpcAttr } from '@/store';
-
+import { generateName, generateSign } from '@/methods';
 export default {
     props: {
         index: {
@@ -24,6 +24,14 @@ export default {
     },
     methods: {
         selected() {
+            if (this.emptyCard) {
+                let newNpcAttr = JSON.parse(JSON.stringify(this.newNpcAttr));
+                newNpcAttr.object.value = generateName();
+                newNpcAttr.sign.value = generateSign();
+                
+                gameObjects.npc.push(newNpcAttr);
+                return
+            }
             state.selected.type = this.type;
             state.selected.index = this.index;
             console.log(state.selected.type, state.selected.index)
@@ -58,7 +66,7 @@ export default {
             </div>
 
             <!-- 新增卡片按钮 -->
-            <div v-if="emptyCard" @click="npcAttrs.push(newNpcAttr)"
+            <div v-if="emptyCard"
                 class="text-[80px] flex items-center w-full h-[128px] leading-none m-auto z-10">
                 <svg class="m-auto" width="36" height="36" viewBox="0 0 50 50" fill="none" :stroke="colorMain"
                     xmlns="http://www.w3.org/2000/svg">

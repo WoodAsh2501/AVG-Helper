@@ -1,6 +1,6 @@
 <script>
-import { gameObjects, state } from '@/store';
-import { newMapAttr } from '@/store';
+import { gameObjects, state, newMapAttr } from '@/store';
+import { generateName, generateSign } from '@/methods';
 
 export default {
     props: {
@@ -21,10 +21,19 @@ export default {
     },
     methods: {
         selected() {
+            if (this.emptyCard) {
+                let newMapAttr = JSON.parse(JSON.stringify(this.newMapAttr));
+                newMapAttr.object.value = generateName();
+                newMapAttr.sign.value = generateSign();
+
+                gameObjects.map.push(newMapAttr);
+                return
+            }
+
             state.selected.type = 'map';
             state.selected.index = this.index;
             console.log(state.selected.type, state.selected.index)
-        }
+        },
     },
     computed: {
         isSelected() {
@@ -54,8 +63,8 @@ export default {
             </div>
 
             <!-- 新增卡片按钮 -->
-            <div v-if="emptyCard" @click="mapAttrs.push(newMapAttr)"
-                class="text-[80px] flex items-center w-full h-[128px] leading-none m-auto z-10">
+            <div v-if="emptyCard"
+                class="text-[80px] flex items-center w-full leading-none m-auto z-10">
                 <svg class="m-auto" width="36" height="36" viewBox="0 0 50 50" fill="none" :stroke="colorMain"
                     xmlns="http://www.w3.org/2000/svg">
                     <circle cx="25" cy="25" r="18" stroke-dasharray="3 3" stroke-width="1.2" />

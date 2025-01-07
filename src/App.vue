@@ -131,7 +131,8 @@ export default {
                 {{ entry.name }}
             </div>
             <div contenteditable @input="(e) => {
-                gameObjects[selectedObjectInfo[0]][selectedObjectInfo[1]][index].value = e.target.innerText
+                gameObjects[selectedObjectInfo[0]][selectedObjectInfo[1]][index].value = e.target.innerText;
+                console.log(selectedObjectInfo)
             }" class="border-[#454545] rounded-[8px] border-[2px] px-2 bg-white">
                 {{ entry.value }}
             </div>
