@@ -3,7 +3,8 @@ import MapBlock from './components/mapBlock.vue';
 import NpcBlock from './components/npcBlock.vue';
 import ModeSwitchButton from './components/modeSwitchButton.vue';
 
-import { state, gameObjects } from '@/store';
+import { state, gameObjects, canvas } from '@/store';
+import { canvasToMap, generateCode } from './methods';
 
 export default {
     components: {
@@ -15,6 +16,7 @@ export default {
         return {
             state,
             gameObjects,
+            canvas,
 
             isDragging: false,
             isEditing: false,
@@ -52,7 +54,7 @@ export default {
             };
             console.log(this.selectedEmoji, state.selected.type, state.selected.index);
         },
-        editing(e) {
+        editing(e, index) {
             if (!this.isEditing) return
 
             const block = e.target;
@@ -66,11 +68,14 @@ export default {
                     emojiContent.draggable = false;
 
                     block.appendChild(emojiContent);
+                    canvas[index] = this.selectedEmoji;
                 }
             }
             else if (this.mode === 'ERASER') {
                 if (block.children.length > 0) {
                     block.removeChild(block.children[0]);
+
+                    delete canvas[index];
                 }
             }
         },
@@ -80,6 +85,12 @@ export default {
             };
         },
 
+        async copyToClipboard() {
+            const code = await generateCode();
+            navigator.clipboard.writeText(code).then(() => {
+                alert('代码已复制到剪贴板~');
+            });
+        }
     },
     computed: {
         mode() {
@@ -103,11 +114,26 @@ export default {
 </script>
 <template>
     <div ref="canvas" id="gridCanvas"
-        class="absolute size-[2500px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-0" @mousedown="dragStart"
-        @mousemove="dragging" @mouseup="dragEnd" @mouseleave="dragEnd">
+         class="absolute size-[2500px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-0" @mousedown="dragStart"
+         @mousemove="dragging" @mouseup="dragEnd" @mouseleave="dragEnd">
         <div v-for="i in 2500" class="border flex justify-center items-center"
-            :class="{ 'hover:bg-black/10': this.mode === 'PEN' }" @mousedown="editStart" @mousemove="editing"
-            @mouseup="editEnd" />
+             :class="{ 'hover:bg-black/10': this.mode === 'PEN' }" @mousedown="editStart"
+             @mousemove="(e) => { editing(e, i) }" @mouseup="editEnd" />
+    </div>
+
+    <div id="exportPanel" class="absolute left-4 top-4 rounded-[8px] size-fit bg-black/10  text-black p-[4px]">
+        <button @click="copyToClipboard" class="size-[32px] rounded-[8px] bg-white border flex justify-center items-center"
+                :style="{ borderColor: buttonColor }">
+            <div class="size-[20px]">
+                <svg xmlns="http://www.w3.org/2000/svg" :fill="buttonColor" width="20" height="20" viewBox="0 0 32 32">
+                    <path class="cls-1"
+                          d="M22.37,5.75H2.23c-1.23,0-2.23.99-2.23,2.23v21.79c0,1.23.99,2.23,2.23,2.23h20.15c1.23,0,2.23-.99,2.23-2.23V7.98c0-1.23-1-2.23-2.23-2.23ZM21.63,29.03H2.97V8.72h18.67v20.31h0Z" />
+                    <path class="cls-1"
+                          d="M26.41,0H6.73c-.82,0-1.48.67-1.48,1.48s.67,1.48,1.48,1.48h19.69c.54,0,.98.44.98.98v22.14c0,.82.67,1.48,1.48,1.48s1.48-.67,1.48-1.48V3.95c0-2.18-1.77-3.95-3.95-3.95Z" />
+                </svg>
+    
+            </div>
+        </button>
     </div>
 
     <div id="toolsPanel" class="absolute left-4 bottom-4 flex flex-col text-[32px] w-fit gap-2">
@@ -125,15 +151,16 @@ export default {
         </div>
     </div>
 
-    <div id="infoPanel" class="absolute right-4 top-4 flex flex-col gap-4 p-[8px] bg-black/10 w-60 text-black">
-        <div v-for="(entry, index) in gameObjects[selectedObjectInfo[0]][selectedObjectInfo[1]]" v-show="entry.visible" class="flex flex-col w-full gap-1">
+    <div id="infoPanel"
+         class="absolute right-4 top-4 flex flex-col gap-4 p-[8px] bg-black/10 w-60 text-black rounded-[16px]">
+        <div v-for="(entry, index) in gameObjects[selectedObjectInfo[0]][selectedObjectInfo[1]]" v-show="entry.visible"
+             class="flex flex-col w-full gap-1">
             <div class="border-[#3198FF] rounded-[8px] border-[2px] w-fit px-2 bg-white">
                 {{ entry.name }}
             </div>
             <div contenteditable @input="(e) => {
                 gameObjects[selectedObjectInfo[0]][selectedObjectInfo[1]][index].value = e.target.innerText;
-                console.log(selectedObjectInfo)
-            }" class="border-[#454545] rounded-[8px] border-[2px] px-2 bg-white">
+            }" class=" rounded-[8px] border-[2px] px-2 bg-white">
                 {{ entry.value }}
             </div>
         </div>

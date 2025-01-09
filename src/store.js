@@ -8,6 +8,9 @@ export const state = reactive({
   },
 });
 
+export const canvas = reactive({
+})
+
 export const gameObjects = reactive({
   player: [
     {
@@ -25,6 +28,11 @@ export const gameObjects = reactive({
         name: "大小",
         value: "100",
         visible: true,
+      },
+      sign: {
+        name: "符号",
+        value: "P",
+        visible: false,
       },
     },
   ],
