@@ -30,3 +30,5 @@ coverage
 *.tsbuildinfo
 .VSCodeCounter
 .gitignore
+
+*.zip
