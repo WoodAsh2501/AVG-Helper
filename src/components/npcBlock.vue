@@ -17,7 +17,7 @@ export default {
             state,
 
             type: this.isPlayer ? 'player' : 'npc',
-            colorMain: "#454545",
+            colorMain: "#aaaaaa",
             colorLighter: "#333333",
             colorSelected: '#3198FF',
         }
@@ -57,7 +57,7 @@ export default {
     }">
         <div class="relative flex flex-col w-full  items-center justify-center">
             <!-- 背景花纹 -->
-            <div v-if="isSelected" class="absolute size-[56px] inset-0 m-auto z-0">
+            <div v-if="isSelected" class="absolute size-[56px] inset-0 m-auto z-0 opacity-50">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 188 188"
                     :fill="isSelected ? colorSelected : colorMain">
                     <path class="cls-1"

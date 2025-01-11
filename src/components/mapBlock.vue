@@ -14,7 +14,7 @@ export default {
             state,
 
             type: 'map',
-            colorMain: "#454545",
+            colorMain: "#aaaaaa",
             colorLighter: "#333333",
             colorSelected: '#3198FF',
         }

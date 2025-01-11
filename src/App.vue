@@ -90,6 +90,14 @@ export default {
             navigator.clipboard.writeText(code).then(() => {
                 alert('代码已复制到剪贴板~');
             });
+        },
+
+        delObject() {
+            let index = state.selected.index;
+            let type = state.selected.type;
+
+            gameObjects[type].splice(index, 1);
+            state.selected.index = index > 1 ? index - 1 : 0;
         }
     },
     computed: {
@@ -116,12 +124,12 @@ export default {
     <div ref="canvas" id="gridCanvas"
          class="absolute size-[2500px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-0" @mousedown="dragStart"
          @mousemove="dragging" @mouseup="dragEnd" @mouseleave="dragEnd">
-        <div v-for="i in 2500" class="border flex justify-center items-center"
+        <div v-for="i in 2500" class="border flex justify-center items-center bg-white"
              :class="{ 'hover:bg-black/10': this.mode === 'PEN' }" @mousedown="editStart"
              @mousemove="(e) => { editing(e, i) }" @mouseup="editEnd" />
     </div>
 
-    <div id="exportPanel" class="absolute left-4 top-4 rounded-[8px] size-fit bg-black/10  text-black p-[4px]">
+    <div id="exportPanel" class="absolute left-4 top-4 rounded-[8px] size-fit panel-background  text-black p-[4px]">
         <button @click="copyToClipboard" class="size-[32px] rounded-[8px] bg-white border flex justify-center items-center"
                 :style="{ borderColor: buttonColor }">
             <div class="size-[20px]">
@@ -137,14 +145,14 @@ export default {
     </div>
 
     <div id="toolsPanel" class="absolute left-4 bottom-4 flex flex-col text-[32px] w-fit gap-2">
-        <div class="flex gap-2 bg-black/10 rounded-[8px] p-[4px] size-fit">
+        <div class="flex gap-2 panel-background rounded-[8px] p-[4px] size-fit">
             <ModeSwitchButton v-for="buttonMode in ['DRAG', 'PEN', 'ERASER']" :key="buttonMode" :mode="buttonMode" />
         </div>
-        <div class="flex flex-wrap size-fit gap-[8px] p-[8px] rounded-[16px] bg-black/10">
+        <div class="flex flex-wrap size-fit gap-[8px] p-[8px] rounded-[16px] panel-background">
             <MapBlock :key="attr" :index="index" v-for="(attr, index) in gameObjects.map" />
             <MapBlock :emptyCard="true" />
         </div>
-        <div class="flex flex-wrap size-fit gap-[8px] p-[8px] rounded-[16px] bg-black/10">
+        <div class="flex flex-wrap size-fit gap-[8px] p-[8px] rounded-[16px] panel-background">
             <NpcBlock :isPlayer="true" />
             <NpcBlock :key="attr" :index="index" v-for="(attr, index) in gameObjects.npc" />
             <NpcBlock :emptyCard="true" />
@@ -152,7 +160,7 @@ export default {
     </div>
 
     <div id="infoPanel"
-         class="absolute right-4 top-4 flex flex-col gap-4 p-[8px] bg-black/10 w-60 text-black rounded-[16px]">
+         class="absolute right-4 top-4 flex flex-col gap-4 p-[8px] panel-background w-60 text-black rounded-[16px]">
         <div v-for="(entry, index) in gameObjects[selectedObjectInfo[0]][selectedObjectInfo[1]]" v-show="entry.visible"
              class="flex flex-col w-full gap-1">
             <div class="border-[#3198FF] rounded-[8px] border-[2px] w-fit px-2 bg-white">
@@ -160,10 +168,11 @@ export default {
             </div>
             <div contenteditable @input="(e) => {
                 gameObjects[selectedObjectInfo[0]][selectedObjectInfo[1]][index].value = e.target.innerText;
-            }" class=" rounded-[8px] border-[2px] px-2 bg-white">
+            }" class=" rounded-[8px] border-[2px] px-2 bg-white overflow-y-auto max-h-20">
                 {{ entry.value }}
             </div>
         </div>
+        <button id="delButton" @click="delObject" class="bg-[#3198FF] rounded-[8px] w-fit px-2 py-1 self-end text-white">删除元素</button>
     </div>
 
 </template>
@@ -173,5 +182,9 @@ export default {
     display: grid;
     grid-template-columns: repeat(50, 1fr);
     grid-template-rows: repeat(50, 1fr);
+}
+
+.panel-background {
+    @apply bg-white/20 border shadow-sm backdrop-blur-sm
 }
 </style>
