@@ -8,7 +8,10 @@ export const state = reactive({
   },
 });
 
-export const canvas = reactive({
+export const canvas = reactive(new Array(2500).fill(null));
+
+export const currentGameObjects = reactive({
+
 })
 
 export const gameObjects = reactive({
@@ -19,6 +22,11 @@ export const gameObjects = reactive({
         value: "😀",
         visible: true,
       },
+      object: {
+        name: "对象名",
+        value: "gameObject_pla",
+        visible: false,
+      },
       coordinate: {
         name: "坐标",
         value: "0,0",
@@ -26,7 +34,7 @@ export const gameObjects = reactive({
       },
       size: {
         name: "大小",
-        value: "100",
+        value: "90",
         visible: true,
       },
       sign: {

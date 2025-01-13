@@ -50,13 +50,14 @@ function isSignRepeat(name) {
       }
     });
   }
-  console.log(currentSigns);
-
   return currentSigns.includes(name);
 }
 
 
-export async function generateCode() {
+export async function generateCode(returnAllCode = true) {
+  console.log(gameObjects);
+  console.log(canvas);
+
   let mapArray = canvasToMap();
 
   let playerCode = `
@@ -111,7 +112,7 @@ ${block.object.value} = createObject({
 
   mapCode += `
 tilesGroup = new Tiles([`
-  
+
 
   for (let i in mapArray) {
     mapCode += `
@@ -131,20 +132,26 @@ tilesGroup = new Tiles([`
   const beforeCode = await fetch(blameCodeBefore).then(response => response.text());
   const afterCode = await fetch(blameCodeAfter).then(response => response.text());
   const allCode = beforeCode + codeMain + afterCode;
-  return allCode
+  return returnAllCode ? allCode : codeMain;
 }
 
 export function canvasToMap() {
   let mapDict = Object.fromEntries(
     gameObjects.map.map(block => [block.emoji.value, block.sign.value])
-    .concat(gameObjects.npc.map(npc => [npc.emoji.value, npc.sign.value]))
-    .concat(gameObjects.player.map(player => [player.emoji.value, 'P']))
+      .concat(gameObjects.npc.map(npc => [npc.emoji.value, npc.sign.value]))
+      .concat(gameObjects.player.map(player => [player.emoji.value, 'P']))
   )
-    
 
-  let canvasArray = Object.entries(canvas);
+  let emojiCanvas = canvas.map((obj) => {
+    if (!obj) return null
+    let [type, index] = obj;
+    return gameObjects[type][index].emoji.value;
+  })
+
+  let canvasArray = emojiCanvas.map((emoji, index) => [index, emoji])
+                               .filter(block => block[1] !== null);
   canvasArray = canvasArray.map(block => [
-    [block[0] % 50,Math.floor(block[0] / 50)],
+    [block[0] % 50, Math.floor(block[0] / 50)],
     mapDict[block[1]]
   ]);
 
@@ -166,11 +173,11 @@ export function canvasToMap() {
     let [x, y] = coords;
     mapArray[y][x] = emoji;
   }
-  
+
   for (let y = 0; y < mapArray.length; y++) {
     for (let x = 0; x < mapArray[y].length; x++) {
       if (mapArray[y][x] === 'P') {
-        gameObjects.player[0].coordinate.value = `${(x+1)*100},${(y+1)*100}`;
+        gameObjects.player[0].coordinate.value = `${(x + 1) * 100},${(y + 1) * 100}`;
         mapArray[y][x] = '.';
       }
     }

@@ -1,4 +1,5 @@
-///////////////////////////////  需要改的地方 End /////////////////////////////////////////
+
+   ///////////////////////////////  需要改的地方 End /////////////////////////////////////////
    
    //update sprite label
    for (let i = 0; i < interactiveObjects.length; i++) {
@@ -265,7 +266,7 @@ function createInteractiveObject(objectParams)
   io.label = objectParams.label;
   if (objectParams.systemPrompt!==undefined)
     {
-      io.agent = new P5Spark();
+      io.agent = new P5DeepSeek();
       io.agent.setSystemPrompt(objectParams.systemPrompt);
       if (objectParams.firstMessage!==undefined) io.agent.messages.push({ role: "assistant", content: objectParams.firstMessage });
       if (objectParams.onSend!==undefined) io.onSend = objectParams.onSend;

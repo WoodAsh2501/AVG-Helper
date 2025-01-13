@@ -3,7 +3,7 @@ import MapBlock from './components/mapBlock.vue';
 import NpcBlock from './components/npcBlock.vue';
 import ModeSwitchButton from './components/modeSwitchButton.vue';
 
-import { state, gameObjects, canvas } from '@/store';
+import { state, gameObjects, canvas, currentGameObjects } from '@/store';
 import { canvasToMap, generateCode } from './methods';
 
 export default {
@@ -47,37 +47,36 @@ export default {
                 this.isDragging = false
             }
         },
+        clickEdit(e, i) {
+            this.edit(i)
+        },
 
+        edit(i) {
+            if (this.mode === 'PEN') {
+                if (canvas[i]) return;
+
+                if ((this.selectedObjectInfo[0] === 'player'
+                    || this.selectedObjectInfo[0] === 'npc')
+                    && this.hasEmoji(this.selectedObjectInfo)) return;
+
+                console.log(this.selectedObjectInfo);
+                canvas[i] = this.selectedObjectInfo;
+                console.log(canvas[i]);
+            } else if (this.mode === 'ERASER') {
+                canvas[i] = null;
+            }
+        },
         editStart() {
             if (this.mode === 'PEN' || this.mode === 'ERASER') {
-                this.isEditing = true
-            };
+                this.isEditing = true;
+            }
             console.log(this.selectedEmoji, state.selected.type, state.selected.index);
         },
-        editing(e, index) {
-            if (!this.isEditing) return
 
-            const block = e.target;
-            if (this.mode === 'PEN') {
-                if (block.children.length === 0) {
-                    const emojiContent = document.createElement('div');
-                    emojiContent.textContent = this.selectedEmoji;
-                    emojiContent.style.pointerEvents = "none";
-                    emojiContent.style.userSelect = "none";
-                    emojiContent.style.userDrag = "none";
-                    emojiContent.draggable = false;
+        editing(e, i) {
+            if (!this.isEditing) return;
 
-                    block.appendChild(emojiContent);
-                    canvas[index] = this.selectedEmoji;
-                }
-            }
-            else if (this.mode === 'ERASER') {
-                if (block.children.length > 0) {
-                    block.removeChild(block.children[0]);
-
-                    delete canvas[index];
-                }
-            }
+            this.edit(i)
         },
         editEnd() {
             if (this.mode === 'PEN' || this.mode === 'ERASER') {
@@ -93,11 +92,31 @@ export default {
         },
 
         delObject() {
-            let index = state.selected.index;
-            let type = state.selected.type;
-
+            console.log(this.selectedObjectInfo);
+            let [type, index] = this.selectedObjectInfo;
+            // 删除元素
             gameObjects[type].splice(index, 1);
             state.selected.index = index > 1 ? index - 1 : 0;
+
+            // 删除元素后，将其从canvas中删除
+            for (let i = 0; i < canvas.length; i++) {
+                if (canvas[i] && canvas[i][0] === type && canvas[i][1] === index) {
+                    canvas[i] = null;
+                } else if (canvas[i] && canvas[i][0] === type && canvas[i][1] > index) {
+                    canvas[i][1] -= 1;
+                }
+            }
+            console.log(gameObjects[type]);
+        },
+        editDiv(e, index) {
+            gameObjects[this.selectedObjectInfo[0]][this.selectedObjectInfo[1]][index].value = e.target.innerText;
+            // 重置光标位置
+            const range = document.createRange();
+            const selection = window.getSelection();
+            range.selectNodeContents(e.target);
+            range.collapse(false);
+            selection.removeAllRanges();
+            selection.addRange(range);
         }
     },
     computed: {
@@ -105,32 +124,48 @@ export default {
             return state.mode
         },
         selectedEmoji() {
-            let index = state.selected.index;
-            let type = state.selected.type;
-
+            let [type, index] = this.selectedObjectInfo;
             return gameObjects[type][index].emoji.value;
-
         },
         selectedObjectInfo() {
             let index = state.selected.index;
             let type = state.selected.type;
 
             return [type, index];
+        },
+        canvasEmoji() {
+            return canvas.map((obj) => {
+                if (!obj) return null
+                let [type, index] = obj;
+                return gameObjects[type][index].emoji.value;
+            })
+        },
+        hasEmoji() {
+            return function (info) {
+                let [type, index] = info;
+                return canvas.some(item => item && item[0] === type && item[1] === index);
+            }
         }
     }
 }
 </script>
 <template>
     <div ref="canvas" id="gridCanvas"
-         class="absolute size-[2500px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-0" @mousedown="dragStart"
-         @mousemove="dragging" @mouseup="dragEnd" @mouseleave="dragEnd">
-        <div v-for="i in 2500" class="border flex justify-center items-center bg-white"
+         class="absolute size-[2500px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-0 select-none"
+         @mousedown="dragStart" @mousemove="dragging" @mouseup="(e) => { dragEnd(); editEnd() }"
+         @mouseleave="(e) => { dragEnd(); editEnd() }">
+        <div v-for="i in 2500" class="border flex justify-center items-center bg-white select-none"
              :class="{ 'hover:bg-black/10': this.mode === 'PEN' }" @mousedown="editStart"
-             @mousemove="(e) => { editing(e, i) }" @mouseup="editEnd" />
+             @mousemove="(e) => { editing(e, i) }" @click="(e) => { clickEdit(e, i) }">
+            <div unselectable class="select-none">
+                {{ canvasEmoji[i] }}
+            </div>
+        </div>
     </div>
 
-    <div id="exportPanel" class="absolute left-4 top-4 rounded-[8px] size-fit panel-background  text-black p-[4px]">
-        <button @click="copyToClipboard" class="size-[32px] rounded-[8px] bg-white border flex justify-center items-center"
+    <div id="exportPanel" class="absolute left-4 top-4 rounded-[8px] size-fit panel-background text-black p-[4px]">
+        <button @click="copyToClipboard"
+                class="size-[32px] rounded-[8px] bg-white border flex justify-center items-center"
                 :style="{ borderColor: buttonColor }">
             <div class="size-[20px]">
                 <svg xmlns="http://www.w3.org/2000/svg" :fill="buttonColor" width="20" height="20" viewBox="0 0 32 32">
@@ -139,7 +174,7 @@ export default {
                     <path class="cls-1"
                           d="M26.41,0H6.73c-.82,0-1.48.67-1.48,1.48s.67,1.48,1.48,1.48h19.69c.54,0,.98.44.98.98v22.14c0,.82.67,1.48,1.48,1.48s1.48-.67,1.48-1.48V3.95c0-2.18-1.77-3.95-3.95-3.95Z" />
                 </svg>
-    
+
             </div>
         </button>
     </div>
@@ -166,13 +201,12 @@ export default {
             <div class="border-[#3198FF] rounded-[8px] border-[2px] w-fit px-2 bg-white">
                 {{ entry.name }}
             </div>
-            <div contenteditable @input="(e) => {
-                gameObjects[selectedObjectInfo[0]][selectedObjectInfo[1]][index].value = e.target.innerText;
-            }" class=" rounded-[8px] border-[2px] px-2 bg-white overflow-y-auto max-h-20">
+            <div contenteditable @input="(e) => {editDiv(e, index)}" class=" rounded-[8px] border-[2px] px-2 bg-white overflow-y-auto max-h-20">
                 {{ entry.value }}
             </div>
         </div>
-        <button id="delButton" @click="delObject" class="bg-[#3198FF] rounded-[8px] w-fit px-2 py-1 self-end text-white">删除元素</button>
+        <button id="delButton" v-if="selectedObjectInfo[0] !== 'player'" @click="delObject"
+                class="bg-[#3198FF] rounded-[8px] w-fit px-2 py-1 self-end text-white">删除元素</button>
     </div>
 
 </template>
