@@ -205,7 +205,7 @@ export default {
                 {{ entry.value }}
             </div>
         </div>
-        <button id="delButton" v-if="selectedObjectInfo[0] !== 'player'" @click="delObject"
+        <button id="delButton" v-if="gameObjects[selectedObjectInfo[0]].length > 1" @click="delObject"
                 class="bg-[#3198FF] rounded-[8px] w-fit px-2 py-1 self-end text-white">删除元素</button>
     </div>
 
