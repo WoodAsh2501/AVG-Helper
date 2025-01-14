@@ -1,6 +1,7 @@
 import { gameObjects, canvas, newNpcAttr, newMapAttr } from "@/store";
 import blameCodeBefore from "@/assets/blameCodeBefore.txt";
 import blameCodeAfter from "@/assets/blameCodeAfter.txt";
+import { jsx } from "vue/jsx-runtime";
 
 export function generateName() {
   const letters = "abcdefghijklmnopqrstuvwxyz";
@@ -152,29 +153,25 @@ export async function parseCode(code) {
     )[1];
   }
 
-  const npcMatches = code.matchAll(
-    /(\w+) = createInteractiveObject\({\s*d:\s*(\d+),\s*image:\s*'([^']+)',\s*tile:\s*'([^']+)',\s*label:\s*'([^']+)',\s*systemPrompt:\s*`([^`]+)`,\s*firstMessage:\s*`([^`]+)`[^}]*\};/gs
-  );
+  const npcMatches = code.matchAll(/\s+(gameObject_\w+)\s+=\s+createInteractiveObject\({\s*d:\s*(\d+),\s*image:\s*'([^']+)',\s*tile:\s*'([^']+)',\s*label:\s*'([^']+)',\s*systemPrompt:\s*`([^`]+)`,\s*firstMessage:\s*`([^`]+)`[^}]*\}/gs);
   for (const match of npcMatches) {
-    const newNpc = { ...newNpcAttr };
-    const npcName = match[1];
-    const npcCode = match[0];
-    newNpc.object.value = npcName;
-    newNpc.size.value = npcCode.match(/d:(\d+)/s)[1];
-    newNpc.emoji.value = npcCode.match(/image:'([^']+)'/s)[1];
-    newNpc.sign.value = npcCode.match(/tile:'([^']+)'/s)[1];
-    newNpc.label.value = npcCode.match(/label:'([^']+)'/s)[1];
-    newNpc.prompt.value = npcCode.match(/systemPrompt:`([^`]+)`/s)[1];
-    newNpc.firstMessage.value = npcCode.match(/firstMessage: `([^`]+)`/s)[1];
+    const newNpc = JSON.parse(JSON.stringify(newNpcAttr));
+    newNpc.object.value = match[1];
+    newNpc.size.value = match[2];
+    newNpc.emoji.value = match[3];
+    newNpc.sign.value = match[4];
+    newNpc.label.value = match[5];
+    newNpc.prompt.value = match[6];
+    newNpc.firstMessage.value = match[7];
 
     gameObjects.npc.push(newNpc);
   }
 
-  const mapMatches = code.matchAll(
+  const tileMatches = code.matchAll(
     /(\w+) = createObject\({\s*d:\s*(\d+),\s*image:\s*'([^']+)',\s*tile:\s*'([^']+)'\s*}\);/gs
   );
-  for (const match of mapMatches) {
-    const newMap = { ...newMapAttr };
+  for (const match of tileMatches) {
+    const newMap = JSON.parse(JSON.stringify(newMapAttr));
     newMap.object.value = match[1];
     newMap.size.value = match[2];
     newMap.emoji.value = match[3];
@@ -183,7 +180,40 @@ export async function parseCode(code) {
     gameObjects.map.push(newMap);
   }
 
-  alert("解析完成");
+  const mapMatch = code.match(/tilesGroup = new Tiles\(\[\s*([\s\S]*?)\s*\],\s*0,\s*0,\s*120,\s*120\s*\);/);
+
+  if (mapMatch) {
+    const mapString = mapMatch[1];
+    const mapDict = Object.fromEntries(
+      gameObjects.map
+        .map((block, index) => [block.sign.value, ["map", index]])
+        .concat(gameObjects.npc.map((npc, index) => [npc.sign.value, ["npc", index]]))
+        .concat(gameObjects.player.map((_, index) => ["P", ["player", index]]))
+    );
+
+    const mapArray = mapString.split(',')
+      .map(line => line.trim().replace(/['"]/g, ''))
+      .map(line => line.split('').map(char => mapDict[char] ? mapDict[char] : null))
+      .slice(0, -1);
+
+    const mapHeight = mapArray.length;
+    const mapWidth = mapArray[0].length;
+    const canvasHeight = 50;
+    const canvasWidth = 50;
+
+    const offsetY = Math.floor((canvasHeight - mapHeight) / 2);
+    const offsetX = Math.floor((canvasWidth - mapWidth) / 2);
+
+    canvas.fill(null);
+
+    for (let y = 0; y < mapHeight; y++) {
+      for (let x = 0; x < mapWidth; x++) {
+        const index = (y + offsetY) * canvasWidth + (x + offsetX);
+        canvas[index] = mapArray[y][x];
+      }
+    }
+    console.log(canvas);
+  }
 }
 
 export function canvasToMap() {
@@ -232,9 +262,8 @@ export function canvasToMap() {
   for (let y = 0; y < mapArray.length; y++) {
     for (let x = 0; x < mapArray[y].length; x++) {
       if (mapArray[y][x] === "P") {
-        gameObjects.player[0].coordinate.value = `${(x + 1) * 100},${
-          (y + 1) * 100
-        }`;
+        gameObjects.player[0].coordinate.value = `${(x + 1) * 100},${(y + 1) * 100
+          }`;
         mapArray[y][x] = ".";
       }
     }
