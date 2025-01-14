@@ -4,7 +4,7 @@ import NpcBlock from './components/npcBlock.vue';
 import ModeSwitchButton from './components/modeSwitchButton.vue';
 
 import { state, gameObjects, canvas, currentGameObjects } from '@/store';
-import { canvasToMap, generateCode } from './methods';
+import { canvasToMap, generateCode, parseCode } from './methods';
 
 export default {
     components: {
@@ -199,12 +199,38 @@ export default {
         </div>
     </div>
 
-    <div id="exportPanel" class="absolute left-4 top-4 rounded-[8px] size-fit panel-background text-black p-[4px]">
+    <div id="exportPanel" class="absolute flex gap-[4px] left-4 top-4 rounded-[8px] size-fit panel-background text-black p-[4px]">
         <button @click="copyToClipboard"
                 class="size-[32px] rounded-[8px] bg-white border flex justify-center items-center"
-                :style="{ borderColor: buttonColor }">
+                >
             <div class="size-[20px]">
-                <svg xmlns="http://www.w3.org/2000/svg" :fill="buttonColor" width="20" height="20" viewBox="0 0 32 32">
+                <svg xmlns="http://www.w3.org/2000/svg"  width="20" height="20" viewBox="0 0 32 32">
+                    <path class="cls-1"
+                          d="M22.37,5.75H2.23c-1.23,0-2.23.99-2.23,2.23v21.79c0,1.23.99,2.23,2.23,2.23h20.15c1.23,0,2.23-.99,2.23-2.23V7.98c0-1.23-1-2.23-2.23-2.23ZM21.63,29.03H2.97V8.72h18.67v20.31h0Z" />
+                    <path class="cls-1"
+                          d="M26.41,0H6.73c-.82,0-1.48.67-1.48,1.48s.67,1.48,1.48,1.48h19.69c.54,0,.98.44.98.98v22.14c0,.82.67,1.48,1.48,1.48s1.48-.67,1.48-1.48V3.95c0-2.18-1.77-3.95-3.95-3.95Z" />
+                </svg>
+
+            </div>
+        </button>
+        <button @click="downloadCode"
+                class="size-[32px] rounded-[8px] bg-white border flex justify-center items-center"
+               >
+            <div class="size-[20px]">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 32 32">
+                    <path class="cls-1"
+                          d="M22.37,5.75H2.23c-1.23,0-2.23.99-2.23,2.23v21.79c0,1.23.99,2.23,2.23,2.23h20.15c1.23,0,2.23-.99,2.23-2.23V7.98c0-1.23-1-2.23-2.23-2.23ZM21.63,29.03H2.97V8.72h18.67v20.31h0Z" />
+                    <path class="cls-1"
+                          d="M26.41,0H6.73c-.82,0-1.48.67-1.48,1.48s.67,1.48,1.48,1.48h19.69c.54,0,.98.44.98.98v22.14c0,.82.67,1.48,1.48,1.48s1.48-.67,1.48-1.48V3.95c0-2.18-1.77-3.95-3.95-3.95Z" />
+                </svg>
+
+            </div>
+        </button>
+        <button @click="uploadCode"
+                class="size-[32px] rounded-[8px] bg-white border flex justify-center items-center"
+                >
+            <div class="size-[20px]">
+                <svg xmlns="http://www.w3.org/2000/svg"  width="20" height="20" viewBox="0 0 32 32">
                     <path class="cls-1"
                           d="M22.37,5.75H2.23c-1.23,0-2.23.99-2.23,2.23v21.79c0,1.23.99,2.23,2.23,2.23h20.15c1.23,0,2.23-.99,2.23-2.23V7.98c0-1.23-1-2.23-2.23-2.23ZM21.63,29.03H2.97V8.72h18.67v20.31h0Z" />
                     <path class="cls-1"
