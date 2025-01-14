@@ -86,9 +86,24 @@ export default {
 
         async copyToClipboard() {
             const code = await generateCode();
+            console.log(code);
             navigator.clipboard.writeText(code).then(() => {
                 alert('代码已复制到剪贴板~');
             });
+        },
+
+        async downloadCode() {
+            const code = await generateCode();
+            const blob = new Blob([code], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            const timestamp = new Date().toISOString().slice(0, 19).replace(/[:.]/g, '-');
+            a.download = `code-${timestamp}.js`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
         },
 
         delObject() {
@@ -111,13 +126,34 @@ export default {
         editDiv(e, index) {
             gameObjects[this.selectedObjectInfo[0]][this.selectedObjectInfo[1]][index].value = e.target.innerText;
             // 重置光标位置
-            const range = document.createRange();
-            const selection = window.getSelection();
-            range.selectNodeContents(e.target);
-            range.collapse(false);
-            selection.removeAllRanges();
-            selection.addRange(range);
-        }
+            // const range = document.createRange();
+            // const selection = window.getSelection();
+            // range.selectNodeContents(e.target);
+            // range.collapse(false);
+            // selection.removeAllRanges();
+            // selection.addRange(range);
+        },
+        async uploadCode() {
+            try {
+                const [fileHandle] = await window.showOpenFilePicker({
+                    types: [
+                        {
+                            description: 'JavaScript Files',
+                            accept: {
+                                'application/javascript': ['.js']
+                            }
+                        }
+                    ]
+                });
+
+                const file = await fileHandle.getFile();
+                const content = await file.text();
+                parseCode(content);
+                console.log(gameObjects);
+            } catch (error) {
+                console.error('Error selecting or reading file:', error);
+            }
+        },
     },
     computed: {
         mode() {
