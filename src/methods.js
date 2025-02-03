@@ -11,7 +11,7 @@ export function generateName() {
   }
 
   if (isNameRepeat(name)) {
-    generateName();
+    return generateName();
   }
 
   return name;
@@ -83,16 +83,12 @@ ${npc.object.value} = createInteractiveObject({
   label:'${npc.label.value}',
   systemPrompt:\`${npc.prompt.value}\`,
   firstMessage: \`${npc.firstMessage.value}\`,
-  onSend:function(){
-    this.update = function(){
-      this.rotation += 5
-    }
+  onApproach:function(){
+    this.scale = 1.1
     },
-    onRespond:function(){
-      this.update = function(){
-      this.rotation = 0
+    onLeave:function(){
+      this.scale = 1
     }
-  }
 });
 
     `;
@@ -273,4 +269,36 @@ export function canvasToMap() {
   console.log(mapArray);
 
   return mapArray;
+}
+
+export function parseJson(jsonString) {
+  const jsonData = JSON.parse(jsonString);
+
+  try {
+    jsonData.map.forEach((item) => {
+      const newMap = JSON.parse(JSON.stringify(newMapAttr));
+      newMap.object.value = generateName();
+      newMap.size.value = item.size;
+      newMap.emoji.value = item.image;
+      newMap.sign.value = generateSign();
+      gameObjects.map.push(newMap);
+    });
+
+    jsonData.npc.forEach((item) => {
+      const newNpc = JSON.parse(JSON.stringify(newNpcAttr));
+      newNpc.object.value = generateName();
+      newNpc.size.value = item.size;
+      newNpc.emoji.value = item.image;
+      newNpc.sign.value = generateSign();
+      newNpc.label.value = item.label;
+      newNpc.prompt.value = item.systemPrompt;
+      newNpc.firstMessage.value = item.firstMessage;
+      gameObjects.npc.push(newNpc);
+    });
+
+    return true
+  } catch (error) {
+    console.error(error);
+    return false
+  }
 }

@@ -1,0 +1,23 @@
+{
+  "map": [
+    { "image": "🌊", "size": 100 },
+    { "image": "🌸", "size": 100 },
+    { "image": "🌲", "size": 100 }
+  ],
+  "npc": [
+    {
+      "image": "📜",
+      "size": 100,
+      "label": "知识卷轴",
+      "systemPrompt": "",
+      "firstMessage": ""
+    },
+    {
+      "image": "👹",
+      "size": 200,
+      "label": "污染恶魔",
+      "systemPrompt": "",
+      "firstMessage": ""
+    }
+  ]
+}
