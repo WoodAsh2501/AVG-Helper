@@ -110,7 +110,8 @@ export default {
       URL.revokeObjectURL(url);
     },
     async importJson() {
-      const jsonText = prompt("请输入JSON文本:");
+      // 将所有空白字符替换成空格，防止json无法解析
+      const jsonText = prompt("请输入JSON文本:").replace(/\s+/g, ' ');
       if (!jsonText) return;
 
       const jsonStructure = {
