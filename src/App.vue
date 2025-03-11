@@ -192,7 +192,7 @@ export default {
 
         const file = await fileHandle.getFile();
         const content = await file.text();
-        parseCode(content);
+        parseCode(content).then();
         console.log(gameObjects);
       } catch (error) {
         console.error("Error selecting or reading file:", error);
